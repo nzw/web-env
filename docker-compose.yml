@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  web:
+    image: nginx
+    depends_on:
+      - app
+    ports:
+      - "8080:80"
+    volumes:
+      - ./docker/web/default.conf:/etc/nginx/conf.d/default.conf
+      - ./data:/var/www/html
+  app:
+    depends_on:
+      - db
+    build: ./docker/app
+    volumes:
+      - ./docker/app/php.ini:/usr/local/etc/php/php.ini
+      - ./data:/var/www/html
+  db:
+    image: mysql:5.6
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: web-db
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: webpw
+    ports:
+      - "3036:3036"
+    volumes:
+      - ./docker/db/data:/var/lib/mysql
+      - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./docker/db/sql:/docker-entrypoint-initdb.d/
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+      - db
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOSTS=db
+      - PMA_USER=testuser
+      - PMA_PASSWORD=webpw
+    ports:
+      - "3000:80"
+    volumes:
+      - ./docker/phpmyadmin/sessions:/sessions
