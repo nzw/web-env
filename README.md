@@ -18,9 +18,13 @@ $ rm -rf docker/db/data
 ```
 
 ## Home:
-Access the URL: `http://localhost:8080
- - Root directory: `./data`
+```
+ * Access the URL: http://localhost:8080
+ * Root directory: ./data
+```
 
 ## Use phpMyAdmin:
-Access the URL: `http://localhost:3000/`
- - Setting enviroment: `./docker-compose.yml`
+```
+ * Access the URL: http://localhost:3000/
+ * Setting enviroment: ./docker-compose.yml
+```
